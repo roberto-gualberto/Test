@@ -1,0 +1,47 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<f:metadata>
+		<f:event listener="#{pesquisaPedidosBean.inicializar}"
+			type="preRenderView" />
+	</f:metadata>
+	<p:dataTable id="meusPedidosTable"
+		value="#{pesquisaPedidosBean.meusPedidosFiltrados}" var="meusPedidos"
+		style="margin-top: 20px" emptyMessage="Nenhum pedido encontrado."
+		rows="4" paginator="true" paginatorAlwaysVisible="false"
+		paginatorPosition="bottom">
+		<p:column headerText="Número" style="text-align: center; width: 100px">
+			<h:outputText value="#{meusPedidos.id}" />
+		</p:column>
+		<p:column headerText="Solicitante">
+			<h:outputText
+				value="#{meusPedidos.usuarioSolicitante.posto.descricao} - #{meusPedidos.usuarioSolicitante.nome}" />
+		</p:column>
+		<p:column headerText="Aprovador">
+			<h:outputText
+				value="#{meusPedidos.usuarioAprovador.posto.descricao} - #{meusPedidos.usuarioAprovador.nome}" />
+		</p:column>
+		<p:column headerText="Data de criação"
+			style="text-align: center; width: 140px">
+			<h:outputText value="#{meusPedidos.dataCriacao}">
+				<f:convertDateTime pattern="dd/MM/yyyy" />
+			</h:outputText>
+		</p:column>
+		<p:column headerText="Total de Itens"
+			style="text-align: right; width: 120px">
+			<h:outputText value="#{meusPedidos.totalItemPedido}" />
+		</p:column>
+		<p:column headerText="Status" style="width: 100px">
+			<h:outputText value="#{meusPedidos.status.descricao}" />
+		</p:column>
+		<p:column style="text-align: center; width: 50px">
+			<p:button icon="ui-icon-search" title="Visualizar"
+				outcome="/pedidos/cadastropedido">
+				<f:param name="meusPedidos" value="#{meusPedidos.id}" />
+			</p:button>
+		</p:column>
+	</p:dataTable>
+</ui:composition>

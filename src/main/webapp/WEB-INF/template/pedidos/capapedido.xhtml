@@ -1,0 +1,58 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+
+	<p:panelGrid style="width: 100%">
+		<f:facet name="header">
+			<p:row>
+				<p:column colspan="9"><h1>Informações do Pedido</h1></p:column>
+			</p:row>
+			<p:row>
+				<p:column style="text-align: left;">Codigo</p:column>
+				<p:column style="text-align: left;">Dada Cadastro</p:column>
+				<p:column style="text-align: left;">Status</p:column>
+				<p:column style="text-align: left;">Solicitante</p:column>
+				<p:column style="text-align: left;">Despachante</p:column>
+			</p:row>
+
+		</f:facet>
+
+		<p:row>
+			<p:column style="font-weight: bold;">#{cadastroPedidoBean.pedido.id}</p:column>
+			<p:column style="font-weight: bold;">
+				<h:outputText value="#{cadastroPedidoBean.pedido.dataCriacao}"
+					rendered="#{cadastroPedidoBean.pedido.existente}">
+					<f:convertDateTime pattern="dd/MM/yyyy" />
+				</h:outputText>
+			</p:column>
+			<p:column style="font-weight: bold;">#{cadastroPedidoBean.pedido.status.descricao}</p:column>
+			<p:column style="font-weight: bold;">
+				<p:selectOneMenu id="solicitante"
+					value="#{cadastroPedidoBean.pedido.usuarioSolicitante}" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+
+					<f:selectItems value="#{cadastroPedidoBean.solicitante}"
+						var="solicitante" itemValue="#{solicitante}"
+						itemLabel="#{solicitante.posto.descricao} #{solicitante.nome}" />
+				</p:selectOneMenu>
+			</p:column>
+
+			<p:column style="font-weight: bold;">
+				<p:autoComplete id="despachante" size="45" dropdown="true"
+					value="#{cadastroPedidoBean.pedido.usuarioAprovador}"
+					completeMethod="#{cadastroPedidoBean.completarAprovador}"
+					var="aprovador"
+					itemLabel="#{aprovador.posto.descricao} #{aprovador.nome}"
+					itemValue="#{aprovador}" forceSelection="true" disabled="#{cadastroPedidoBean.pedido.naoAlteravel}" />
+			</p:column>
+		</p:row>
+
+		<f:facet name="footer">
+			<p:row>
+				<p:column colspan="9" />
+			</p:row>
+		</f:facet>
+	</p:panelGrid>
+</ui:composition>

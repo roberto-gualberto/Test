@@ -1,0 +1,114 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa artefatos</ui:define>
+
+	<ui:define name="corpo">
+		<h:form id="frmPesquisa">
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;" colspan="9">
+							<h1>Pesquisa Artefatos</h1>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+			<p:messages autoUpdate="true" closable="true" />
+			<p:toolbar style="margin-top: 20px; height:30px">
+				<p:toolbarGroup>
+					<p:commandButton value="Pesquisar"
+						action="#{pesquisaArtefatosBean.pesquisar}" update="@form" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Novo" outcome="/artefatos/cadastroartefato" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;">
+							<p:outputLabel value="CÓDIGO" for="codigo" />
+						</p:column>
+						<p:column style="text-align: left;">
+							<p:inputText id="codigo" size="20"
+								value="#{pesquisaArtefatosBean.filter.codigo}" />
+						</p:column>
+					</p:row>
+					<p:row>
+						<p:column style="text-align: left;">
+							<p:outputLabel value="Nome" for="nome" />
+						</p:column>
+						<p:column style="text-align: left;">
+							<p:inputText id="nome" size="45"
+								value="#{pesquisaArtefatosBean.filter.nome}" />
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+
+			<p:dataTable id="artefatosTable"
+				value="#{pesquisaArtefatosBean.artefatosFiltrados}" var="artefato"
+				style="margin-top: 20px" emptyMessage="Nenhum artefato encontrado."
+				rows="20" paginator="true" paginatorAlwaysVisible="false"
+				paginatorPosition="bottom">
+				<p:column headerText="CODIGO"
+					style="text-align: center; width: 100px">
+					<h:outputText value="#{artefato.codigo}" />
+				</p:column>
+				<p:column headerText="Dada Cadastro"
+					style="text-align: center; width: 100px">
+					<h:outputLabel value="#{artefato.dataCadastro}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputLabel>
+				</p:column>
+				<p:column headerText="Dada Validade"
+					style="text-align: center; width: 100px">
+					<h:outputLabel value="#{artefato.dataValidade}">
+						<f:convertDateTime pattern="dd/MM/yyyy" />
+					</h:outputLabel>
+				</p:column>
+				<p:column headerText="Nome">
+					<h:outputText value="#{artefato.nome}" />
+				</p:column>
+				<p:column headerText="Categoria" style="width: 250px">
+					<h:outputText
+						value="#{artefato.categoria.categoriaPai.descricao} - #{artefato.categoria.descricao}" />
+				</p:column>
+				<p:column headerText="Estoque"
+					style="text-align: center; width: 100px">
+					<h:outputText value="#{artefato.quantidadeEstoque}" />
+				</p:column>
+				<p:column style="width: 100px; text-align: center">
+					<p:button outcome="/artefatos/cadastroartefato"
+						icon="ui-icon-pencil" title="Editar">
+						<f:param name="artefato" value="#{artefato.id}" />
+					</p:button>
+					<p:commandButton icon="ui-icon-trash" title="Excluir"
+						oncomplete="confirmacaoExclusao.show()" process="@this"
+						update=":frmPesquisa:confirmacaoExclusaoDialog">
+						<f:setPropertyActionListener
+							target="#{pesquisaArtefatosBean.artefatoSelecionado}"
+							value="#{artefato}" />
+					</p:commandButton>
+				</p:column>
+			</p:dataTable>
+
+			<p:confirmDialog header="Exclusão de artefato"
+				message="Tem certeza que deseja excluir o artefato #{pesquisaArtefatosBean.artefatoSelecionado.codigo}?"
+				widgetVar="confirmacaoExclusao" id="confirmacaoExclusaoDialog">
+				<p:button value="Não"
+					onclick="confirmacaoExclusao.hide(); return false;" />
+				<p:commandButton value="Sim"
+					oncomplete="confirmacaoExclusao.hide();"
+					action="#{pesquisaArtefatosBean.excluir}" process="@this"
+					update=":frmPesquisa:artefatosTable" />
+			</p:confirmDialog>
+		</h:form>
+	</ui:define>
+</ui:composition>

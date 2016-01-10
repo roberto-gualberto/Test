@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title><ui:insert name="titulo">Sistema de Pedidos de Artefato Belico</ui:insert></title>
+	<h:outputStylesheet library="css" name="sistema.css" />
+</h:head>
+
+<h:body>
+
+	<p:ajaxStatus styleClass="ajax-status">
+		<f:facet name="start">
+			<h:graphicImage library="images" name="loading.gif" />
+		</f:facet>
+		<f:facet name="complete">
+			<h:outputText value="" />
+		</f:facet>
+	</p:ajaxStatus>
+
+	<header>
+	<div style="float: left; margin-left: 10px">
+		<h:link outcome="/home">
+			<h:graphicImage library="images" name="eng.png" />
+			<h:graphicImage library="images" name="srab.png" />
+		</h:link>
+
+		<div
+			style="float: right; margin-right: 10px; margin-left: 450px; margin-top: 45px">
+			<p:outputLabel value="#{seguranca.nomeUsuario}"
+				style="font-size:14px" />
+			<h:outputLink value="${request.contextPath}/j_spring_security_logout"
+				style="text-decoration:none; margin-left: 20px; color: #FFF">Sair</h:outputLink>
+
+
+		</div>
+		<h:form style="display: inline-block">
+			<p:menubar styleClass="menu-sistema">
+				<p:submenu label="Usuários">
+					<p:menuitem value="Pesquisa Usuários"
+						outcome="/usuarios/pesquisausuarios" />
+					<p:menuitem value="Novo Usuários"
+						outcome="/usuarios/cadastrousuario" />
+				</p:submenu>
+				<p:submenu label="Artefatos">
+					<p:menuitem value="Pesquisa Artefatos"
+						outcome="/artefatos/pesquisaartefatos" />
+					<p:menuitem value="Novo Artefato"
+						outcome="/artefatos/cadastroartefato" />
+				</p:submenu>
+				<p:submenu label="Categoria">
+					<p:menuitem value="categorias"
+						outcome="/categorias/pesquisacategorias" />
+				</p:submenu>
+				<p:submenu label="Pedidos">
+					<p:menuitem value="Novo pedido" outcome="/pedidos/cadastropedido" />
+					<p:menuitem value="Pesquisa" outcome="/pedidos/pesquisapedidos" />
+				</p:submenu>
+				<p:submenu label="Relatorios">
+					<p:menuitem value="Pedidos Emitidos"
+						outcome="/relatorios/pedidosemitidos" />
+					<p:menuitem value="Pedidos Aprovados" outcome="/relatorios/pedidosaprovados"/>
+					<p:menuitem value="Pedidos Cancelados" outcome="/relatorios/pedidoscancelados"/>
+				</p:submenu>
+			</p:menubar>
+		</h:form>
+	</div>
+	<div style="clear: both"></div>
+	</header>
+	<div id="conteudo">
+		<ui:insert name="corpo" />
+	</div>
+	
+</h:body>
+</html>

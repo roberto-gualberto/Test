@@ -1,0 +1,78 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<p:dataTable value="#{cadastroPedidoBean.pedido.itens}"
+		rowIndexVar="linha" var="item" id="tabelaItens"
+		style="margin-top:10px">
+
+		<p:column headerText="Codigo" style="text-align: left; width: 20px">
+			<h:outputText value="#{item.artefato.codigo}"
+				rendered="#{item.artefatoAssociado}" />
+			<p:inputText size="20" value="#{cadastroPedidoBean.codigo}"
+				label="CODIGO" rendered="#{not item.artefatoAssociado}"
+				disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+				<p:ajax event="change" process="@this" update="tabelaItens"
+					listener="#{cadastroPedidoBean.carregarArtefatoPorCodigo}" />
+
+			</p:inputText>
+		</p:column>
+
+		<p:column headerText="Artefato" style="text-align: left; width: 60px">
+			<h:outputText value="#{item.artefato.nome}"
+				rendered="#{item.artefatoAssociado}" />
+			<p:autoComplete size="70"
+				value="#{cadastroPedidoBean.artefatoLinhaEditavel}"
+				completeMethod="#{cadastroPedidoBean.completarArtefato}"
+				var="artefato" itemLabel="#{artefato.nome}" itemValue="#{artefato}"
+				forceSelection="true" rendered="#{not item.artefatoAssociado}"
+				disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+				<p:ajax event="itemSelect" update="tabelaItens"
+					listener="#{cadastroPedidoBean.carregarArtefatoLinhaEditavel}" />
+			</p:autoComplete>
+		</p:column>
+		<p:column headerText="Categoria" style="text-align: left; width: 40px">
+			<h:outputText
+				value="#{item.artefato.categoria.categoriaPai.descricao}" />
+		</p:column>
+
+		<p:column headerText="Quantidade"
+			style="text-align: left; width: 10px">
+			<p:inputText size="5" value="#{item.quantidade}"
+				disabled="#{cadastroPedidoBean.pedido.naoAlteravel}">
+				<p:ajax event="change" process="@this" update="tabelaItens"
+					listener="#{cadastroPedidoBean.calcularTotalItens}" />
+				<p:ajax event="change" process="@this" update="tabelaItens"
+					listener="#{cadastroPedidoBean.atualizarQuantidade(item, linha)}" />
+			</p:inputText>
+		</p:column>
+
+		<p:column headerText="Estoque" style="text-align: left; width: 10px">
+			<p:outputLabel value="#{item.artefato.quantidadeEstoque}"
+				style="#{item.estoqueInsuficiente ? 'color: red' : ''}" />
+
+			<h:graphicImage library="images" name="alerta.png" id="semEstoque"
+				style="vertical-align: bottom; margin-left: 5px"
+				rendered="#{item.estoqueInsuficiente}" />
+
+			<p:tooltip for="semEstoque" value="Estoque insuficiente"
+				rendered="#{item.estoqueInsuficiente}" />
+
+		</p:column>
+
+		<p:columnGroup type="footer">
+			<p:row>
+				<p:column colspan="3" footerText="Total Itens"
+					style="text-align: right; font-size: 15px;" />
+				<p:column colspan="2" id="totalItens"
+					footerText="#{cadastroPedidoBean.pedido.totalItemPedido}"
+					style="text-align: left; font-size: 18px;" />
+			</p:row>
+		</p:columnGroup>
+
+	</p:dataTable>
+
+
+</ui:composition>

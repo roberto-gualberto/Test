@@ -1,0 +1,91 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+	<ui:define name="titulo">#{cadastroArtefatoBean.editando ? 'Edição de artefato' : 'Novo artefato'}</ui:define>
+	<ui:define name="corpo">
+		<f:metadata>
+			<o:viewParam name="artefato" value="#{cadastroArtefatoBean.artefato}" />
+			<f:event listener="#{cadastroArtefatoBean.inicializar}"
+				type="preRenderView" />
+		</f:metadata>
+		<h:form>
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;" colspan="9">
+							<h1>#{cadastroArtefatoBean.editando ? 'Edição de artefato' :
+								'Novo artefato'}</h1>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+			<p:messages autoUpdate="true" closable="true" />
+
+			<p:toolbar style="margin-top: 20px; height:30px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/artefatos/cadastroartefato" />
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{cadastroArtefatoBean.salvar}" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/artefatos/pesquisaartefatos" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" style="width:100%; margin-top: 20px"
+				id="painel" columnClasses="rotulo,campo">
+				<p:outputLabel value="CODIGO" for="codigo" />
+				<p:inputText id="codigo" size="20" maxlength="20"
+					value="#{cadastroArtefatoBean.artefato.codigo}" />
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="50" maxlength="50"
+					value="#{cadastroArtefatoBean.artefato.nome}" />
+
+				<p:outputLabel value="Categoria" for="categoria" />
+				<p:selectOneMenu id="categoria"
+					value="#{cadastroArtefatoBean.categoriaPai}">
+					<f:selectItem itemLabel="Selecione uma Categoria" />
+					<f:selectItems value="#{cadastroArtefatoBean.categoriaRaizes}"
+						var="categoria" itemValue="#{categoria}"
+						itemLabel="#{categoria.descricao}" />
+					<p:ajax listener="#{cadastroArtefatoBean.carregarSubcategorias}"
+						update="subcategoria" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Subcategoria" for="subcategoria" />
+				<p:selectOneMenu id="subcategoria"
+					value="#{cadastroArtefatoBean.artefato.categoria}">
+					
+					<f:selectItem itemLabel="Selecione a subcategoria" />
+					<f:selectItems value="#{cadastroArtefatoBean.subcategorias}"
+						var="subcategoria" itemValue="#{subcategoria}"
+						itemLabel="#{subcategoria.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Paiol" for="tipoPaiol" />
+				<p:selectOneMenu id="tipoPaiol"
+					value="#{cadastroArtefatoBean.artefato.tipoPaiol}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{cadastroArtefatoBean.tipoPaiol}"
+						var="tipoPaiol" itemValue="#{tipoPaiol}"
+						itemLabel="#{tipoPaiol.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Data de Validade" for="datavalidade" />
+				<p:calendar id="datavalidade" pattern="dd/MM/yyyy" size="10"
+					value="#{cadastroArtefatoBean.artefato.dataValidade}" />
+
+				<p:outputLabel value="Estoque" for="estoque" />
+				<p:inputText id="estoque" size="6" maxlength="8"
+					value="#{cadastroArtefatoBean.artefato.quantidadeEstoque}" />
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+
+</ui:composition>

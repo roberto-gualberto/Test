@@ -1,0 +1,26 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Dashboard</ui:define>
+	<f:metadata>
+		<f:viewParam name="dummy" />
+		<f:event listener="#{graficoPedidosEmitidosBean.preRender}"
+			type="preRenderView" />
+	</f:metadata>
+
+	<ui:define name="corpo">
+		<div id="imagemHome">
+			<h:graphicImage library="images" name="estoque1.png" />
+		</div>
+		<div id="grafico">
+			<p:lineChart value="#{graficoPedidosEmitidosBean.model}"
+				title="Srab - Grafico Demonstrativo" style="height: 500px; width: 830px" animate="true"
+				minY="0" maxY="4000" legendPosition="e" />
+		</div>
+	</ui:define>
+
+</ui:composition>

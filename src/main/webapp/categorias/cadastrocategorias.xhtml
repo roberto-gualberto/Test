@@ -1,0 +1,49 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+
+	<ui:define name="titulo">#{cadastroCategoriaBean.editando ? 'Edição de Categoria' : 'Nova Categoria'}</ui:define>
+	<ui:define name="corpo">
+		<f:metadata>
+			<o:viewParam name="categoria" value="#{cadastroCategoriaBean.categoria}" />
+			<f:event listener="#{cadastroCategoriaBean.inicializar}"
+				type="preRenderView" />
+		</f:metadata>
+		<h:form id="frm1">
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;" colspan="9">
+							<h1>#{cadastroCategoriaBean.editando ? 'Edição de Categoria'
+								: 'Nova Categoria'}</h1>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+
+			<p:messages autoUpdate="true" closable="true" />
+			<p:toolbar style="margin-top: 20px; height:30px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/categorias/cadastrocategorias" />
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{cadastroCategoriaBean.salvar}" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/categorias/pesquisacategorias" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" style="width:100%; margin-top: 20px"
+				id="painel" columnClasses="rotulo,campo">
+
+				<p:outputLabel value="Descricao" for="descricao" />
+				<p:inputText id="descricao" size="50" maxlength="50"
+					value="#{cadastroCategoriaBean.categoria.descricao}" />
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

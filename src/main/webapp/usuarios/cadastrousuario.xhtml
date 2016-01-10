@@ -1,0 +1,99 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui" xmlns:o="http://omnifaces.org/ui">
+
+
+	<ui:define name="titulo">#{cadastroUsuarioBean.editando ? 'Edição de Usuario' : 'Novo Usuario'}</ui:define>
+	<ui:define name="corpo">
+		<f:metadata>
+			<o:viewParam name="usuario" value="#{cadastroUsuarioBean.usuario}" />
+			<f:event listener="#{cadastroUsuarioBean.inicializar}"
+				type="preRenderView" />
+		</f:metadata>
+		<h:form id="frm1">
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;" colspan="9">
+							<h1>#{cadastroUsuarioBean.editando ? 'Edição de Usuario' :
+								'Novo Usuario'}</h1>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+
+			<p:messages autoUpdate="true" closable="true" />
+			<p:toolbar style="margin-top: 20px; height:30px">
+				<p:toolbarGroup>
+					<p:button value="Novo" outcome="/usuarios/cadastrousuario" />
+					<p:commandButton value="Salvar" id="botaoSalvar"
+						action="#{cadastroUsuarioBean.salvar}" />
+				</p:toolbarGroup>
+				<p:toolbarGroup align="right">
+					<p:button value="Pesquisa" outcome="/usuarios/pesquisausuarios" />
+				</p:toolbarGroup>
+			</p:toolbar>
+
+			<p:panelGrid columns="2" style="width:100%; margin-top: 20px"
+				id="painel" columnClasses="rotulo,campo">
+
+				<p:outputLabel value="Identidade" for="identidade" />
+				<p:inputText id="identidade" size="15" maxlength="15"
+					value="#{cadastroUsuarioBean.usuario.identidade}" />
+
+				<p:outputLabel value="Posto Graduacao" for="tipoPostoGraduacao" />
+				<p:selectOneMenu id="tipoPostoGraduacao"
+					value="#{cadastroUsuarioBean.usuario.posto}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{cadastroUsuarioBean.tipoPostoGraduacao}"
+						var="tipoPostoGraduacao" itemValue="#{tipoPostoGraduacao}"
+						itemLabel="#{tipoPostoGraduacao.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Nome" for="nome" />
+				<p:inputText id="nome" size="40" maxlength="40"
+					value="#{cadastroUsuarioBean.usuario.nome}" />
+
+				<p:outputLabel value="Email" for="email" />
+				<p:inputText id="email" size="40" maxlength="40"
+					value="#{cadastroUsuarioBean.usuario.email}" />
+
+				<p:outputLabel value="Divisao" for="divisao" />
+				<p:selectOneMenu id="divisao"
+					value="#{cadastroUsuarioBean.usuario.divisao}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{cadastroUsuarioBean.divisao}" var="divisao"
+						itemValue="#{divisao}" itemLabel="#{divisao.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Senha" for="senha" />
+				<p:password id="senha" size="20"
+					value="#{cadastroUsuarioBean.usuario.senha}" redisplay="true" />
+
+				<p:outputLabel value="Confirma Senha" for="confirmasenha" />
+				<p:password id="confirmasenha" size="20"
+					value="#{cadastroUsuarioBean.usuario.senha}" redisplay="true" />
+
+				<p:outputLabel value="Sexo" for="sexo" />
+				<p:selectOneMenu id="sexo"
+					value="#{cadastroUsuarioBean.usuario.sexo}">
+					<f:selectItem itemLabel="Selecione" />
+					<f:selectItems value="#{cadastroUsuarioBean.sexo}" var="sexo"
+						itemValue="#{sexo}" itemLabel="#{sexo.descricao}" />
+				</p:selectOneMenu>
+
+				<p:outputLabel value="Grupo" for="grupo" />
+				<p:selectOneMenu id="grupo"
+					value="#{cadastroUsuarioBean.usuario.grupo}">
+					<f:selectItem itemLabel="Selecione um Grupo" />
+					<f:selectItems value="#{cadastroUsuarioBean.grupos}" var="grupo"
+						itemValue="#{grupo}" itemLabel="#{grupo.descricao}" />
+				</p:selectOneMenu>
+
+			</p:panelGrid>
+		</h:form>
+	</ui:define>
+</ui:composition>

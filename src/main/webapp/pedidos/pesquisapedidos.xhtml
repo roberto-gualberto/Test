@@ -1,0 +1,36 @@
+<ui:composition template="/WEB-INF/template/layoutpadrao.xhtml"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:p="http://primefaces.org/ui">
+
+	<ui:define name="titulo">Pesquisa pedidos</ui:define>
+
+	<ui:define name="corpo">
+		<h:form>
+			<p:panelGrid style="width: 100%">
+				<f:facet name="header">
+					<p:row>
+						<p:column style="text-align: left;" colspan="9">
+							<h1>Pesquisa Pedidos</h1>
+						</p:column>
+					</p:row>
+				</f:facet>
+			</p:panelGrid>
+			<p:tabView style="margin-top:20px">
+				<p:tab title="Meus Pendentes">
+					<ui:include
+						src="/WEB-INF/template/pedidos/meuspedidospendentes.xhtml"></ui:include>
+				</p:tab>
+				<p:tab title="Minhas Solicitacoes">
+					<ui:include
+						src="/WEB-INF/template/pedidos/minhassolicitacoes.xhtml"></ui:include>
+				</p:tab>
+				<p:tab title="Todos Pedidos">
+					<ui:include src="/WEB-INF/template/pedidos/todospedidos.xhtml"></ui:include>
+				</p:tab>
+			</p:tabView>
+		</h:form>
+	</ui:define>
+</ui:composition>
